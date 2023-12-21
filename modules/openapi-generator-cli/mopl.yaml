@@ -1,0 +1,25 @@
+# GeneratorSettings
+generatorName: typescript-fetch
+additionalProperties:
+  # DefaultCodegen.processOpts
+  apiNameSuffix: ''
+
+  # TypeScriptFetchClientOptionsProvider.createOptions
+  enumPropertyNaming: 'original'
+  modelPropertyNaming: 'original'
+  paramNaming: 'original'
+  enumNameSuffix: ''
+
+# WorkflowSettings
+inputSpec: https://dev_id:dev_password@admin-api.mopl-dev.com/apartment/api-docs-json
+outputDir: gen/mopl
+removeOperationIdPrefix: true
+validateSpec: false
+templateDir: src/main/resources/mopl
+
+#
+files:
+  - templateFile: ''
+    folder: ''
+    destinationFilename: ''
+    templateType: API

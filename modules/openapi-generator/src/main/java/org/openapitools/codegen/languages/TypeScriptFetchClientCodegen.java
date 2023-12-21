@@ -144,6 +144,7 @@ public class TypeScriptFetchClientCodegen extends AbstractTypeScriptClientCodege
     public Boolean getStringEnums() {
         return this.stringEnums;
     }
+
     public void setStringEnums(Boolean stringEnums) {
         this.stringEnums = stringEnums;
     }
@@ -217,8 +218,8 @@ public class TypeScriptFetchClientCodegen extends AbstractTypeScriptClientCodege
             sourceDir = "src" + File.separator;
         }
 
-        this.apiPackage = sourceDir + "apis";
-        this.modelPackage = sourceDir + "models";
+        this.apiPackage = sourceDir + "models";
+        this.modelPackage = sourceDir + "interface/response";
 
         supportingFiles.add(new SupportingFile("index.mustache", sourceDir, "index.ts"));
         supportingFiles.add(new SupportingFile("runtime.mustache", sourceDir, "runtime.ts"));
@@ -956,7 +957,8 @@ public class TypeScriptFetchClientCodegen extends AbstractTypeScriptClientCodege
     private static boolean itemsAreUniqueId(CodegenProperty items) {
         if (items != null && items.items != null) {
             return itemsAreUniqueId(items.items);
-        };
+        }
+        ;
         if (items != null && items.vendorExtensions.get(X_IS_UNIQUE_ID) instanceof Boolean) {
             return Boolean.TRUE.equals(items.vendorExtensions.get(X_IS_UNIQUE_ID));
         }
@@ -969,7 +971,8 @@ public class TypeScriptFetchClientCodegen extends AbstractTypeScriptClientCodege
         }
         if (items.items != null) {
             return itemsAreNullable(items.items);
-        };
+        }
+        ;
         return items.isNullable;
     }
 
@@ -979,7 +982,8 @@ public class TypeScriptFetchClientCodegen extends AbstractTypeScriptClientCodege
         }
         if (items.items != null) {
             return getItemsDataType(items.items);
-        };
+        }
+        ;
         return items.dataType;
     }
 

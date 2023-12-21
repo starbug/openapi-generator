@@ -1078,7 +1078,7 @@ public class DefaultGenerator implements Generator {
             }
         }
 
-        generateVersionMetadata(files);
+        // generateVersionMetadata(files);
     }
 
     Map<String, Object> buildSupportFileBundle(List<OperationsMap> allOperations, List<ModelMap> allModels) {
@@ -1226,7 +1226,7 @@ public class DefaultGenerator implements Generator {
         processUserDefinedTemplates();
 
         // generate .openapi-generator-ignore if the option openapiGeneratorIgnoreFile is enabled
-        generateOpenAPIGeneratorIgnoreFile();
+        // generateOpenAPIGeneratorIgnoreFile();
 
         List<File> files = new ArrayList<>();
         // models
@@ -1283,7 +1283,7 @@ public class DefaultGenerator implements Generator {
         } else {
             // This exists here rather than in the method which generates supporting files to avoid accidentally adding files after this metadata.
             if (generateSupportingFiles) {
-                generateFilesMetadata(files);
+                // generateFilesMetadata(files);
             }
         }
 
