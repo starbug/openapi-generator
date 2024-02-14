@@ -1,0 +1,29 @@
+{{#imports.0}}
+{{#imports}}
+import type { {{className}} } from '../response/{{className}}';
+{{/imports}}
+{{/imports.0}}
+
+{{#hasEnums}}
+{{#operations}}
+{{#operation}}
+{{#allParams}}
+{{#isEnum}}
+export type {{operationIdCamelCase}}{{enumName}} = {{#allowableValues}}{{#enumVars}}{{{value}}}{{^-last}} | {{/-last}}{{/enumVars}}{{/allowableValues}};
+{{/isEnum}}
+{{/allParams}}
+{{/operation}}
+{{/operations}}
+{{/hasEnums}}
+
+{{#operations}}
+{{#operation}}
+{{#allParams.0}}
+export interface {{operationIdCamelCase}}Request {
+{{#allParams}}
+  {{paramName}}{{^required}}?{{/required}}: {{#isEnum}}{{{datatypeWithEnum}}}{{/isEnum}}{{^isEnum}}{{{dataType}}}{{#isNullable}} | null{{/isNullable}}{{/isEnum}};
+{{/allParams}}
+}
+{{/allParams.0}}
+{{/operation}}
+{{/operations}}

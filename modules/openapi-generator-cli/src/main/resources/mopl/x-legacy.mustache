@@ -1,0 +1,35 @@
+export const fetchWrapper = (
+  path: string,
+  method: "GET" | "POST" | "PATCH" | "PUT" | "DELETE" | "OPTION",
+  body?: object | FormData,
+  accessToken?: string,
+  isFormData?: boolean,
+  headers?: object,
+  /*
+  options?: INextFetchRequest
+  */
+) => {
+  const contentType = isFormData
+    ? undefined
+    : { "Content-Type": "application/json" };
+
+  const baseUrl = `${
+    typeof window === "undefined"
+      ? process.env.NEXT_PUBLIC_API_BASE_URL
+      : (window as any).ENV.NEXT_PUBLIC_API_BASE_URL
+  }`;
+
+  const url = `${baseUrl}${path}`;
+
+  return fetch(url, {
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+      ...contentType,
+      ...headers,
+    },
+    method: method,
+    body: isFormData ? (body as FormData) : JSON.stringify(body),
+    cache: options?.cache,
+    next: options?.next,
+  });
+};

@@ -461,6 +461,7 @@ public class DefaultCodegen implements CodegenConfig {
                 .put("titlecase", new TitlecaseLambda())
                 .put("camelcase", new CamelCaseLambda(true).generator(this))
                 .put("pascalcase", new CamelCaseLambda(false).generator(this))
+                .put("kebablcase", new KebabCaseLambda())
                 .put("forwardslash", new ForwardSlashLambda())
                 .put("backslash", new BackSlashLambda())
                 .put("doublequote", new DoubleQuoteLambda())
@@ -6103,6 +6104,10 @@ public class DefaultCodegen implements CodegenConfig {
     @Override
     public String apiFilename(String templateName, String tag, String outputDir) {
         String suffix = apiTemplateFiles().get(templateName);
+        if (outputDir.endsWith("/models"))
+            return outputDir + File.separator + dashize(tag) + ".service" + suffix;
+        if (outputDir.endsWith("/request"))
+            return outputDir + File.separator + dashize(tag) + ".types" + suffix;
         return outputDir + File.separator + toApiFilename(tag) + suffix;
     }
 

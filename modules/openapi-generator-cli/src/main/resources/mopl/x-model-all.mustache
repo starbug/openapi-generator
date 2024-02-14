@@ -1,0 +1,29 @@
+{{#models}}
+{{#model}}
+
+{{#hasEnums}}
+{{#vars}}
+{{#isEnum}}
+export type {{classname}}{{enumName}} = {{#allowableValues}}{{#enumVars}}{{{value}}}{{^-last}} | {{/-last}}{{/enumVars}}{{/allowableValues}};
+{{/isEnum}}
+{{/vars}}
+{{/hasEnums}}
+
+/**
+ * {{#lambda.indented_star_1}}{{{unescapedDescription}}}{{/lambda.indented_star_1}}
+ */
+export interface {{classname}} {{#parent}}extends {{{.}}} {{/parent}}{
+{{#vars}}
+  /**
+    * {{#lambda.indented_star_4}}{{{unescapedDescription}}}{{/lambda.indented_star_4}}
+    *
+  {{#deprecated}}
+    * @deprecated
+  {{/deprecated}}
+    */
+  {{#isReadOnly}}readonly {{/isReadOnly}}{{name}}{{^required}}?{{/required}}: {{#isEnum}}{{{datatypeWithEnum}}}{{#isNullable}} | null{{/isNullable}}{{/isEnum}}{{^isEnum}}{{{datatype}}}{{#isNullable}} | null{{/isNullable}}{{/isEnum}};
+{{/vars}}
+}
+
+{{/model}}
+{{/models}}

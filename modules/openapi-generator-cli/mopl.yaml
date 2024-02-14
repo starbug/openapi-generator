@@ -1,0 +1,48 @@
+# GeneratorSettings
+generatorName: typescript-fetch
+additionalProperties:
+  # DefaultCodegen.processOpts
+  allowUnicodeIdentifiers: true
+  apiNameSuffix: ''
+
+  # TypeScriptFetchClientOptionsProvider.createOptions
+  enumPropertyNaming: 'original'
+  modelPropertyNaming: 'original'
+  paramNaming: 'original'
+  enumNameSuffix: ''
+
+# WorkflowSettings
+inputSpec: https://dev_id:dev_password@admin-api.mopl-dev.com/apartment/api-docs-json
+outputDir: gen/mopl/.openapi-generator-default
+removeOperationIdPrefix: true
+validateSpec: false
+templateDir: src/main/resources/mopl
+
+files:
+#  x-readme.mustache:
+#    destinationFilename: ../README.md
+#    templateType: SupportingFiles
+  x-api.ts.mustache:
+    folder: ../models
+    templateType: API
+  x-api-request.ts.mustache:
+    folder: ../interface/request
+    templateType: API
+#  x-model.ts.mustache:
+#    folder: ../interface/response
+#    templateType: Model
+#  x-model-tag.ts.mustache:
+#    folder: ../interface/response
+#    templateType: API
+  x-model-all.mustache:
+    destinationFilename: ../interface/response/index.ts
+    templateType: SupportingFiles
+  x-index-api.mustache:
+    destinationFilename: ../models/index.ts
+    templateType: SupportingFiles
+#  x-index-model.mustache:
+#    destinationFilename: ../interface/response/index.ts
+#    templateType: SupportingFiles
+  x-legacy.mustache:
+    destinationFilename: ../legacy.ts
+    templateType: SupportingFiles

@@ -559,6 +559,7 @@ public class DefaultGenerator implements Generator {
         // generate files based on processed models
         for (String modelName : allProcessedModels.keySet()) {
             ModelsMap models = allProcessedModels.get(modelName);
+            models.put("x-model" ,"DefaultGenerator:562");
             models.put("modelPackage", config.modelPackage());
             try {
                 //don't generate models that have a schema mapping
@@ -628,6 +629,7 @@ public class DefaultGenerator implements Generator {
                 ops.sort((one, another) -> ObjectUtils.compare(one.operationId, another.operationId));
                 OperationsMap operation = processOperations(config, tag, ops, allModels);
                 URL url = URLPathUtils.getServerURL(openAPI, config.serverVariableOverrides());
+                operation.put("x-api", "DefaultGenerator:632");
                 operation.put("basePath", basePath);
                 operation.put("basePathWithoutHost", removeTrailingSlash(config.encodePath(url.getPath())));
                 operation.put("contextPath", contextPath);

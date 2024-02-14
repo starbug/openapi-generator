@@ -1,0 +1,155 @@
+import { fetchWrapper } from '../legacy'
+
+{{#imports.0}}
+{{#imports}}
+import type { {{className}} } from '../interface/response/index'; // {{className}}
+{{/imports}}
+{{/imports.0}}
+
+{{#operations}}
+{{#operation}}
+{{#allParams.0}}
+import type { {{operationIdCamelCase}}Request } from '../interface/request/{{#lambda.kebablcase}}{{classFilename}}{{/lambda.kebablcase}}.types';
+{{/allParams.0}}
+{{/operation}}
+{{/operations}}
+
+{{#operations}}
+/**
+ * {{#lambda.indented_star_1}}{{{unescapedDescription}}}{{/lambda.indented_star_1}}
+ */
+export const {{classname}} = {
+  {{#operation}}
+  /**
+   {{#notes}}
+   * {{&notes}}
+   {{/notes}}
+   {{#summary}}
+   * {{&summary}}
+   {{/summary}}
+   {{#isDeprecated}}
+   * @deprecated
+   {{/isDeprecated}}
+   */
+  async {{nickname}}(accessToken: string | undefined{{#allParams.0}}, requestParameters: {{operationIdCamelCase}}Request{{/allParams.0}}): Promise<{{{returnType}}}{{^returnType}}void{{/returnType}}> {
+    const queryParameters = {};
+
+    {{#queryParams}}
+    {{#isArray}}
+    if (requestParameters.{{paramName}}) {
+      {{#isCollectionFormatMulti}}
+      queryParameters['{{baseName}}'] = requestParameters.{{paramName}};
+      {{/isCollectionFormatMulti}}
+      {{^isCollectionFormatMulti}}
+      queryParameters['{{baseName}}'] = {{#uniqueItems}}Array.from({{/uniqueItems}}requestParameters.{{paramName}}.join(",");
+      {{/isCollectionFormatMulti}}
+    }
+    {{/isArray}}
+    {{^isArray}}
+    if (requestParameters.{{paramName}} !== undefined) {
+      {{#isDateTimeType}}
+      queryParameters['{{baseName}}'] = requestParameters.{{paramName}}.toISOString();
+      {{/isDateTimeType}}
+      {{#isDateType}}
+      queryParameters['{{baseName}}'] = requestParameters.{{paramName}}.toISOString().substring(0, 10);
+      {{/isDateType}}
+      {{^isDateType}}
+      queryParameters['{{baseName}}'] = requestParameters.{{paramName}};
+      {{/isDateType}}
+    }
+    {{/isArray}}
+    {{/queryParams}}
+
+    {{#hasFormParams}}
+    const consumes = [
+      {{#consumes}}
+      { contentType: '{{{mediaType}}}' },
+      {{/consumes}}
+    ];
+
+    let formParams: { append(param: string, value: any): any };
+    let useForm = false;
+
+    {{#formParams}}
+    {{#isFile}}
+    for (const consume of consumes) {
+      if ('multipart/form-data' === consume.contentType) {
+        useForm = true;
+      }
+    }
+    {{/isFile}}
+    {{/formParams}}
+
+    if (useForm) {
+      formParams = new FormData();
+    } else {
+      formParams = new URLSearchParams();
+    }
+
+    {{#formParams}}
+    {{#isArray}}
+    if (requestParameters.{{paramName}}) {
+      {{#isCollectionFormatMulti}}
+      requestParameters.{{paramName}}.forEach((element) => {
+        formParams.append('{{baseName}}', element);
+      })
+      {{/isCollectionFormatMulti}}
+      {{^isCollectionFormatMulti}}
+      formParams.append('{{baseName}}', {{#uniqueItems}}Array.from({{/uniqueItems}}requestParameters.{{paramName}}.join(","));
+      {{/isCollectionFormatMulti}}
+    }
+    {{/isArray}}
+    {{^isArray}}
+    if (requestParameters.{{paramName}} !== undefined) {
+      {{#isPrimitiveType}}
+      formParams.append('{{baseName}}', requestParameters.{{paramName}});
+      {{/isPrimitiveType}}
+      {{^isPrimitiveType}}
+      formParams.append('{{baseName}}', new Blob([JSON.stringify(requestParameters.{{paramName}})], { type: "application/json", }));
+      {{/isPrimitiveType}}
+    }
+    {{/isArray}}
+    {{/formParams}}
+    {{/hasFormParams}}
+
+    queryParameters; // TODO: qs.stringify
+
+    const response = fetchWrapper(
+      `{{{path}}}`{{#pathParams}}.replace(`{${"{{baseName}}"}}`, encodeURIComponent(String(requestParameters.{{paramName}}))){{/pathParams}},
+      '{{httpMethod}}',
+      {{#hasBodyParam}}
+      {{#bodyParam}}
+      {{#isContainer}}
+      requestParameters.{{paramName}},
+      {{/isContainer}}
+      {{^isContainer}}
+      {{^isPrimitiveType}}
+      requestParameters.{{paramName}},
+      {{/isPrimitiveType}}
+      {{#isPrimitiveType}}
+      requestParameters.{{paramName}},
+      {{/isPrimitiveType}}
+      {{/isContainer}}
+      {{/bodyParam}}
+      {{/hasBodyParam}}
+      {{#hasFormParams}}
+      formParams,
+      {{/hasFormParams}}
+      accessToken,
+    );
+
+    {{#returnType}}
+    {{#isResponseFile}}
+    return response.blob();
+    {{/isResponseFile}}
+    {{^isResponseFile}}
+    return response.json();
+    {{/isResponseFile}}
+    {{/returnType}}
+    {{^returnType}}
+    return undefined;
+    {{/returnType}}
+  },
+  {{/operation}}
+}
+{{/operations}}
